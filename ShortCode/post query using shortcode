@@ -1,0 +1,58 @@
+<?php
+
+
+function shortcode_testimonial($atts){
+    extract(shortcode_atts(array(
+        'type'=>'post',
+        'cat'=>'1',
+        'posts_per_page'=>'5',
+        //'country' => 'Dhaka, Bangladesh'
+
+ 
+    ),$atts));
+
+	$options = array(
+        'type' => $type,
+        'posts_per_page' => $posts_per_page,
+        'cat' => $cat,
+        //'country' => $country,
+    );
+    $query = new WP_Query( $options );
+
+    while ( $query->have_posts() ) : $query->the_post();
+
+		 
+
+        $output .= '<div class="testimonial">';
+        	$output .= '<div class="testimonial-left">';
+                $output .= '<div class="testimonial-content">'.get_the_content() .'</div>';
+            $output .= '</div>';
+
+            $output .= '<div class="testimonial-right">';
+                $output .= '<div class="testimonial-thumbnail">'.get_the_post_thumbnail() .'</div>';
+                $output .= '<div class="testimonial-title"><a href="'.get_permalink().'">'.get_the_title("","",false).'</a></div>';
+               // $output .= '<div class="testimonial-country">'.$country .'</div>';
+            $output .= '</div>';
+
+        $output .= '</div>';
+    	
+
+    endwhile;
+    
+wp_reset_postdata();
+
+    return $output;
+
+
+ 
+   
+}
+add_shortcode("testimonial","shortcode_testimonial");
+
+
+
+
+
+
+
+?>
